@@ -18,3 +18,30 @@ Links = pd.read_excel(r'input_file.xlsx')
 
 candidates = input("Please input your name here : ")
 
+'''Function to extract different informations of the product'''
+def do_task(iteration):
+
+
+
+
+
+
+
+
+
+
+
+'''Use the function above to crawl for all links'''
+for iteration in range(len(Links)):
+    print('on the {} link (total: {})'.format(iteration + 1, len(Links)))   
+    output = do_task(iteration)
+    result.loc[len(result)] = output
+    
+
+'''Exporting result to target folder'''
+end_time = datetime.now()
+timestr = time.strftime("%d.%m.%Y-%H%M%S")
+print('Duration: {}'.format(end_time - start_time))
+name = "Webshop_"+timestr+"_"+candidates
+result.to_excel(r'{}.xlsx'.format(name), index=False)  
+
