@@ -21,7 +21,24 @@ candidates = input("Please input your name here : ")
 '''Function to extract different informations of the product'''
 def do_task(iteration):
 
+    url = Links.iloc[iteration,0]
+        
+        #the next line sends a http get request to the specified url which retrieves the HTML content of the webpage in response. 
+        res = requests.get(url)
 
+        # res.text retrieves the content of the res object as a string, which is then passed as an argument to BeautifulSoup
+        #next line uses BeautifulSoup to parse the html content of the page, creating a soup object
+        soup = BeautifulSoup(res.text, 'html.parser')
+
+        
+        # check if product_title element exists before accessing it
+        #if the product_title is present then extract the value and store in a variable 
+
+        product_title_elem = soup.find('h1', {'class': 'product-title'})
+        if product_title_elem:
+            product_title = product_title_elem.text.strip()
+        else:
+            product_title = ''
 
 
 
