@@ -23,22 +23,43 @@ def do_task(iteration):
 
     url = Links.iloc[iteration,0]
         
-        #the next line sends a http get request to the specified url which retrieves the HTML content of the webpage in response. 
-        res = requests.get(url)
+    #the next line sends a http get request to the specified url which retrieves the HTML content of the webpage in response. 
+    res = requests.get(url)
 
-        # res.text retrieves the content of the res object as a string, which is then passed as an argument to BeautifulSoup
-        #next line uses BeautifulSoup to parse the html content of the page, creating a soup object
-        soup = BeautifulSoup(res.text, 'html.parser')
+    # res.text retrieves the content of the res object as a string, which is then passed as an argument to BeautifulSoup
+    #next line uses BeautifulSoup to parse the html content of the page, creating a soup object
+    soup = BeautifulSoup(res.text, 'html.parser')
 
         
-        # check if product_title element exists before accessing it
-        #if the product_title is present then extract the value and store in a variable 
+    # check if product_title element exists before accessing it
+    #if the product_title is present then extract the value and store in a variable 
 
-        product_title_elem = soup.find('h1', {'class': 'product-title'})
-        if product_title_elem:
-            product_title = product_title_elem.text.strip()
-        else:
-            product_title = ''
+    product_title_elem = soup.find('h1', {'class': 'product-title'})
+    if product_title_elem:
+        product_title = product_title_elem.text.strip()
+    else:
+        product_title = ''
+
+    # similarly check for size, price, and variation_id elements if the data is extractable then store it otherwise store a blank space in the variable
+
+    # next line looks for first span element that has the class attribute set to product-size within the HTML content of the soup object, and if the size_elem is not None then store it in size variable
+
+    # size checking part-1 where the size has a selection
+    select_elem = soup.find('select', {'id': 'data-product-option-0'})
+    if select_elem:
+        selected_option = select_elem.find('option', {'selected': 'selected'})
+        size = selected_option.get('value') if selected_option else " "
+    else:
+        # size = soup.find('div', {'class': 'product-description'}).find('li', text=lambda t: 'Size' in t).text.strip().split()[-1]
+        size=product_title.split(" ")[-1]
+        
+
+    findprice=soup.find('div', {'class': 'price--main'})
+    price = findprice.find('span', {'class': 'money'}).text.strip() if findprice else " "
+
+
+    # the next line finds the HTML input element with the attribute name set to variation_id using the BeautifulSoup. This element is then stored in the variable variation_id_elem, and if it isn't None then the get() method is called on the variation_id_elem object with the argument 'value' to extract the value of the value attribute of the input element, and it is stored in the variable variation_id
+    
 
 
 
