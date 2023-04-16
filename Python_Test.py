@@ -59,7 +59,22 @@ def do_task(iteration):
 
 
     # the next line finds the HTML input element with the attribute name set to variation_id using the BeautifulSoup. This element is then stored in the variable variation_id_elem, and if it isn't None then the get() method is called on the variation_id_elem object with the argument 'value' to extract the value of the value attribute of the input element, and it is stored in the variable variation_id
-    
+
+    variant_elem = soup.find('select', {'name': 'id'})
+    if variant_elem :
+        variant_option = variant_elem.find('option', selected=True)
+
+        # Extract the value of the 'data-variant-id' attribute
+        original_variant_id = variant_option['data-variant-id']
+    else: 
+        id_elem = soup.find('input', {'name': 'id'})
+        original_variant_id = id_elem['value'] if id_elem else " "
+
+
+    #then store the data of all the variables as list in a single output variable
+    output = [url, product_title, size, price, original_variant_id]
+    # at last return the extracted values from the web page
+    return output
 
 
 
